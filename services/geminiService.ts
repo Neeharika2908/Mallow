@@ -2,34 +2,38 @@ import { GoogleGenAI } from "@google/genai";
 import { API_KEY, MAPS_MODEL_NAME } from "../constants";
 
 export const findNearbyHospitals = async (lat: number, lng: number) => {
-  const ai = new GoogleGenAI({ apiKey: API_KEY });
-  
   try {
-    const response = await ai.models.generateContent({
-      model: MAPS_MODEL_NAME,
-      contents: "Find the 3 nearest hospitals or medical centers to my location. Provide their names and addresses.",
-      config: {
-        tools: [{ googleMaps: {} }],
-        toolConfig: {
-          retrievalConfig: {
-            latLng: {
-              latitude: lat,
-              longitude: lng
-            }
-          }
-        }
-      }
+    const overpassUrl = import.meta.env.VITE_OVERPASS_API_URL || "https://overpass-api.de/api/interpreter";
+    
+    const query = `[bbox:${lat - 0.045},${lng - 0.045},${lat + 0.045},${lng + 0.045}];(node["amenity"="hospital"]; way["amenity"="hospital"]; );out center 5;`;
+
+    const response = await fetch(overpassUrl, {
+      method: "POST",
+      body: query,
     });
 
-    const chunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
-    const text = response.text;
+    if (!response.ok) {
+      throw new Error(`Overpass API error: ${response.status}`);
+    }
+
+    const data = await response.json();
     
+    const hospitals = (data.elements || [])
+      .slice(0, 5)
+      .map((element: any) => ({
+        text: element.tags?.name || "Hospital",
+        places: element.lat && element.lon ? [{ lat: element.lat, lng: element.lon }] : [],
+      }));
+
     return {
-      text,
-      places: chunks?.filter(c => c.maps).map(c => c.maps) || []
+      text: `Found ${hospitals.length} nearby hospitals`,
+      places: hospitals.length > 0 ? hospitals[0].places : [],
     };
   } catch (error) {
     console.error("Error finding hospitals:", error);
-    throw error;
+    return {
+      text: "Could not fetch hospital data.",
+      places: [],
+    };
   }
 };
