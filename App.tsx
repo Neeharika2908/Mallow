@@ -198,7 +198,7 @@ const Dashboard: React.FC = () => {
              </button>
 
              <button 
-                onClick={() => setShowEmergency(true)}
+                onClick={() => handleQuickAction("I need help finding care or medical resources.")true)}
                 className="flex flex-col items-center justify-center p-3 rounded-2xl bg-white/40 hover:bg-white/70 border border-white/50 shadow-sm transition-all hover:scale-105 active:scale-95 gap-2 group"
              >
                 <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-500 group-hover:bg-rose-200 transition-colors">
