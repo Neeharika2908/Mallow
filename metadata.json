@@ -1,0 +1,8 @@
+{
+  "name": " Mallow AI- Your Caring AI Companion",
+  "description": "A friendly, conversational AI companion with emergency location features.",
+  "requestFramePermissions": [
+    "microphone",
+    "geolocation"
+  ]
+}
