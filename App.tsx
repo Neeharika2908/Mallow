@@ -176,8 +176,6 @@ const Dashboard: React.FC = () => {
              <button 
                 onClick={() => handleQuickAction("Start the breathing exercise now.")}
                 className="flex flex-col items-center justify-center p-3 rounded-2xl bg-white/40 hover:bg-white/70 border border-white/50 shadow-sm transition-all hover:scale-105 active:scale-95 gap-2 group"
-             >resources.")}
-                <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-500 group-hover:bg-emerald-200 transition-colors">
                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                         <path fillRule="evenodd" d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z" clipRule="evenodd" />
                     </svg>
